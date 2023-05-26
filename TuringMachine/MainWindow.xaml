@@ -1,0 +1,163 @@
+﻿<Window x:Class="TuringMachine.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TuringMachine"
+        xmlns:fa5="http://schemas.fontawesome.com/icons/"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" ResizeMode="NoResize">
+    <Window.DataContext>
+        <local:MainWindowViewModel/>
+    </Window.DataContext>
+    <StackPanel>
+        <Menu>
+            <MenuItem Name="MenuItem_File" Header="File"></MenuItem>
+            <MenuItem Name="MenuItem_Tape" Header="Tape"></MenuItem>
+            <MenuItem Name="MenuItem_Execution" Header="Execution"></MenuItem>
+            <MenuItem Name="MenuItem_Speed" Header="Speed"></MenuItem>
+            <MenuItem Name="MenuItem_About" Header="?"></MenuItem>
+        </Menu>
+
+        <Menu>
+            <MenuItem Name="NewSolution">
+                <MenuItem.Header>
+                    <fa5:ImageAwesome Icon="Regular_FileAlt" Height="25"/>
+                </MenuItem.Header>
+            </MenuItem>
+            <MenuItem Name="OpenSolution">
+                <MenuItem.Header>
+                    <fa5:ImageAwesome Icon="Regular_FolderOpen" Height="25"/>
+                </MenuItem.Header>
+            </MenuItem>
+            <MenuItem Name="SaveSolution">
+                <MenuItem.Header>
+                    <fa5:ImageAwesome Icon="Regular_Save" Height="25"/>
+                </MenuItem.Header>
+            </MenuItem>
+            <MenuItem Name="ToBuffer">
+                <MenuItem.Header>
+                    <fa5:ImageAwesome Icon="Regular_CaretSquareDown" Height="25"/>
+                </MenuItem.Header>
+            </MenuItem>
+            <MenuItem Name="FromBuffer">
+                <MenuItem.Header>
+                    <fa5:ImageAwesome Icon="Regular_ArrowAltCircleUp" Height="25"/>
+                </MenuItem.Header>
+            </MenuItem>
+
+            <MenuItem Name="Run" Margin="50,0,0,0">
+                <MenuItem.Header>
+                    <fa5:ImageAwesome Icon="Regular_PlayCircle" Height="25"/>
+                </MenuItem.Header>
+            </MenuItem>
+            <MenuItem Name="Pause">
+                <MenuItem.Header>
+                    <fa5:ImageAwesome Icon="Regular_PauseCircle" Height="25"/>
+                </MenuItem.Header>
+            </MenuItem>
+            <MenuItem Name="Wtf">
+                <MenuItem.Header>
+                    <fa5:ImageAwesome Icon="Regular_ArrowAltCircleRight" Height="25"/>
+                </MenuItem.Header>
+            </MenuItem>
+
+        </Menu>
+        <StackPanel>
+            <TextBlock Text="Условие задачи:" Height="25"/>
+            <TextBox Height="50"/>
+        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="40*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Height="50"></Button>
+            <Button Grid.Column="1" Height="50"></Button>
+
+            <StackPanel Grid.Column="2">
+                <ListView FontFamily="Courier New" ItemsSource="{Binding curPos}"
+              ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Center">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
+
+                <ListView FontFamily="Courier New" ItemsSource="{Binding arr}"
+              ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Center">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
+
+            </StackPanel>
+            
+            <Button Grid.Column="3" Height="50"></Button>
+            <Button Grid.Column="4" Height="50"></Button>
+        </Grid>
+        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <StackPanel Orientation="Horizontal" Margin="10">
+                    <TextBlock Text="Alphabet: "/>
+                    <TextBox x:Name="Alphabet" Width="250"/>
+                </StackPanel>
+
+                <StackPanel Margin="10" Orientation="Horizontal">
+                    <Button Height="25" Width="25" Margin="15,0,0,0">
+                        <Button.Content>
+                            <fa5:ImageAwesome Icon="Regular_CaretSquareLeft"/>
+                        </Button.Content>
+                    </Button>
+                    <Button Height="25" Width="25" Margin="15,0,0,0">
+                        <Button.Content>
+                            <fa5:ImageAwesome Icon="Regular_CaretSquareRight"/>
+                        </Button.Content>
+                    </Button>
+                    <Button Height="25" Width="25" Margin="15,0,0,0">
+                        <Button.Content>
+                            <fa5:ImageAwesome Icon="Regular_WindowClose"/>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+<!--
+                <DataGrid x:Name="Rules">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header=" "/>
+                        <DataGridTextColumn Header="Q1" Width="75"/>
+                        <DataGridTextColumn Header="Q2" Width="75"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                -->
+                <ListView>
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn>abc</GridViewColumn>
+                                <GridViewColumn>def</GridViewColumn>
+                                <GridViewColumn>ghi</GridViewColumn>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="1">
+                <TextBlock Text="Comment"/>
+            </StackPanel>
+            
+        </Grid>
+        
+    </StackPanel>
+</Window>
