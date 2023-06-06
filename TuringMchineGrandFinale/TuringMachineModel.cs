@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Windows.Shell;
 
 namespace TuringMachineGrandFinale
 {
@@ -19,12 +20,14 @@ namespace TuringMachineGrandFinale
         }
 
         string tape;
+        public Dictionary<int, string> tape_dictionary;
         int curPos = 0;
         string curState;
 
         List<Rule> rules;
         public TuringMachineModel()
         {
+            tape_dictionary = new Dictionary<int, string>();
             curState = "0";
             rules = new List<Rule>();
         }
@@ -51,6 +54,7 @@ namespace TuringMachineGrandFinale
             get => tape;
             set
             {
+
                 StringBuilder stringBuilder = new StringBuilder(value);
                 tape = stringBuilder.ToString();
             }

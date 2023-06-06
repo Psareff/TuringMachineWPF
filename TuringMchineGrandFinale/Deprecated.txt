@@ -32,7 +32,7 @@ namespace TuringMachineGrandFinale
         DataRow pos;
         DataRow cur;
 
-        int relativeShift = 0, absoluteShift = 0;
+        int relativeMove = 0;
 
         public MainWindow()
         {
@@ -56,7 +56,7 @@ namespace TuringMachineGrandFinale
 
                 turingMachine.tape_dictionary.Add(i, "_");
                 pos[i] = i;
-                str[i] = turingMachine.tape_dictionary[i];
+                str[i] = "_";
             }
             cur[0] = "^";
 
@@ -78,11 +78,6 @@ namespace TuringMachineGrandFinale
 
         private void Tape_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            Trace.WriteLine($"Value {str[e.Column.DisplayIndex]} at absolute {e.Column.DisplayIndex} and relative {pos[e.Column.DisplayIndex]}" );
-            turingMachine.tape_dictionary[Convert.ToInt32(pos[e.Column.DisplayIndex])] = str.ItemArray[Convert.ToInt32(e.Column.DisplayIndex)].ToString();
-
-            Trace.WriteLine(str.ItemArray[Convert.ToInt32(e.Column.DisplayIndex)].ToString());
-            Trace.WriteLine(turingMachine.tape_dictionary[Convert.ToInt32(pos[e.Column.DisplayIndex])]);
             //Trace.WriteLine($"Cell {(relativeMove > e.Column.DisplayIndex ? e.Column.DisplayIndex - (relativeMove - 20): e.Column.DisplayIndex)} edited");
             //turingMachine.tape_dictionary[relativeMove > e.Column.DisplayIndex ? relativeMove -e.Column.DisplayIndex : e.Column.DisplayIndex] = str[e.Column.DisplayIndex].ToString();
         }
@@ -105,47 +100,80 @@ namespace TuringMachineGrandFinale
 
         private void Ptr_Left_Click(object sender, RoutedEventArgs e)
         {
-            if (absoluteShift > 0)
-                absoluteShift--;
-            relativeShift--;
+            relativeMove--;
             turingMachine.CurPos--;
-            if (!turingMachine.tape_dictionary.ContainsKey(relativeShift))
-                turingMachine.tape_dictionary.Add(relativeShift, "_");
+            Trace.WriteLine(relativeMove);
+            /*
+            if (relativeMove <= 0)
+            {
+                cur[0] = "^";
+                cur[1] = " ";
+            }
 
-            Trace.WriteLine("Relative :" + relativeShift + "; Absolute: " + absoluteShift);
-            cur[absoluteShift] = "^";
-            if (absoluteShift >= 19)
-                cur[19] = " ";
-            cur[absoluteShift + 1] = " ";
-
-            if (relativeShift <= Convert.ToInt32(pos.ItemArray[absoluteShift]))
+            else
+            { 
+                cur[relativeMove >= 19 ? 18 : relativeMove] = "^";
+                cur[(relativeMove >= 19 ? 18 : relativeMove) + 1] = " ";
+            
+            }
+            */
+            if (!turingMachine.tape_dictionary.ContainsKey(relativeMove))
+            {
+                turingMachine.tape_dictionary.Add(relativeMove, "_");
                 for (int i = 0; i < 20; i++)
-                    pos[i] = relativeShift - absoluteShift + i;
-
+                {
+                    str[i] = turingMachine.tape_dictionary[relativeMove + i];
+                    pos[i] = relativeMove + i;
+                }
+            }
+            else for (int i = 0; i < 20; i++)
+            {
+                str[i] = turingMachine.tape_dictionary[i];
+                pos[i] = i;
+            }
         }
 
         private void Tape_Right_Click(object sender, RoutedEventArgs e)
         {
+
         }
 
         private void Ptr_Right_Click(object sender, RoutedEventArgs e)
         {
-            if (absoluteShift < 19)
-                absoluteShift++;
-            relativeShift++;
+            relativeMove++;
             turingMachine.CurPos++;
+            Trace.WriteLine(relativeMove);
 
-            if (!turingMachine.tape_dictionary.ContainsKey(relativeShift))
-                turingMachine.tape_dictionary.Add(relativeShift, "_");
-            Trace.WriteLine("Relative :" + relativeShift + "; Absolute: " + absoluteShift);
-            cur[absoluteShift] = "^";
-            if (absoluteShift <= 0)
-                cur[1] = " ";
-            cur[absoluteShift - 1] = " ";
-            if (relativeShift >= Convert.ToInt32(pos.ItemArray[absoluteShift]))
+
+            /*
+            if (relativeMove >= 20)
+            {
+                cur[19] = "^";
+                cur[18] = " ";
+
+            }
+            else
+            {
+                cur[relativeMove <= 0 ? 0 : relativeMove] = "^";
+                cur[(relativeMove <= 0 ? 0 : relativeMove) - 1] = " ";
+
+            }
+            */
+            if (!turingMachine.tape_dictionary.ContainsKey(relativeMove))
+            {
+                turingMachine.tape_dictionary.Add(relativeMove, "_");
                 for (int i = 0; i < 20; i++)
-                    pos[i] = relativeShift - absoluteShift + i;
+                {
+                    str[i] = turingMachine.tape_dictionary[relativeMove - i];
+                    pos[19 - i] = relativeMove - i;
 
+                }
+            }
+            else for (int i = 0; i < 20; i++)
+            {
+                str[i] = turingMachine.tape_dictionary[i];
+                pos[i] = i;
+            }
         }
     }
 }
