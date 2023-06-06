@@ -1,0 +1,20 @@
+﻿<Window x:Class="TuringMachine.TuringMachineView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TuringMachine"
+        mc:Ignorable="d"
+        Title="TuringMachine" Height="450" Width="800">
+    <Window.DataContext>
+        <local:MainWindowViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <StackPanel>
+            <TextBox Name ="Tape" Text="{Binding Arr}" Width="250" FontFamily="Global Monospace" FontWeight="Normal"/>
+            <TextBox Text="{Binding CurPos}" Width="250" FontFamily="Global Monospace"/>
+            <TextBox Text="{Binding Alphabet}" Width="250" FontFamily="Global Monospace"/>
+            <Button x:Name="AddRule" Content="Add rule" Width="50" Click="AddRule_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
