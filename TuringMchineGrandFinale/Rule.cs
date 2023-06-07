@@ -10,10 +10,10 @@ using System.Diagnostics;
 namespace TuringMachineGrandFinale
 {
     internal class Rule
-    {
+    { 
         public string curQ, nextQ;
-        public char curSymb, nextSymb;
-        Behavior behavior;
+        public string curSymb, nextSymb;
+        public Behavior behavior;
 
         Regex regex = new Regex(@"q(\w+)(\w)->q(\w+)(\w)(L|R|S)");
 
@@ -23,10 +23,10 @@ namespace TuringMachineGrandFinale
             {
                 string[] s = regex.Split(rule_str);
                 curQ = s[1];
-                curSymb = s[2][0];
+                curSymb = s[2];
                 nextQ = s[3];
-                nextSymb = s[4][0];
-                behavior = (Behavior)s[4][0];
+                nextSymb = s[4];
+                behavior = (Behavior)s[5][0];
             }
             else throw new ArgumentException("Invalid rule pushed");
         }

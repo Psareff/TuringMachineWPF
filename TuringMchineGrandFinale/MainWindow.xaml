@@ -11,11 +11,8 @@
     </Window.DataContext>
     <StackPanel>
         <StackPanel Orientation="Horizontal" Height="90" HorizontalAlignment="Center">
-            <StackPanel VerticalAlignment="Bottom">
-                <Button Height="30" Width="25" Name="Tape_Left" Click="Tape_Left_Click" Content="&lt;-" FontWeight="Black"/>
-                <Button Height="30" Width="25" Name="Ptr_Left" Click="Ptr_Left_Click" Content="&lt;"/>
-            </StackPanel>
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Height="60" Width="25" Name="Ptr_Left" Click="Ptr_Left_Click" Content="&lt;" VerticalAlignment="Bottom"/>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <DataGrid Name="Positions"
                             Width="700"
                       FontWeight="Light"
@@ -49,10 +46,12 @@
                     </DataGrid.CellStyle>
 
                 </DataGrid>
+                
                 <DataGrid Name="Tape"
                             Width="700"
                             ColumnWidth="35"
                             MinColumnWidth="35"
+
                             MinRowHeight="30"
                             ColumnHeaderHeight="0" 
                             CanUserAddRows="False" 
@@ -65,15 +64,25 @@
                             HorizontalScrollBarVisibility="Disabled" 
                             IsReadOnly="False"
                           GridLinesVisibility="None"
-                            VerticalScrollBarVisibility="Disabled" BeginningEdit="Tape_BeginningEdit" CellEditEnding="Tape_CellEditEnding">
+                          BorderThickness="0"
+                            VerticalScrollBarVisibility="Disabled">
+                    
                     <DataGrid.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="HorizontalAlignment" Value="Center"/>
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Setter Property="BorderThickness" Value="0"/>
+                            <Style.Triggers>
+                                <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                    <Setter Property="BorderBrush" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                                    <Setter Property="Background" Value="Gray"/>
+                                </Trigger>
+                            </Style.Triggers>
                         </Style>
                     </DataGrid.CellStyle>
                 </DataGrid>
+                
             <DataGrid Name="Ptr" 
                             Width="700"
                             ColumnWidth="35"
@@ -100,17 +109,20 @@
                         <Style TargetType="DataGridCell">
                             <Setter Property="HorizontalAlignment" Value="Center"/>
                             <Setter Property="VerticalAlignment" Value="Top"/>
-                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="BorderThickness" Value="1"/>
                         </Style>
                     </DataGrid.CellStyle>
                 </DataGrid>
             </StackPanel>
-            <StackPanel VerticalAlignment="Bottom">
-                <Button Height="30" Width="25" Name="Tape_Right" Click="Tape_Right_Click" Content="->" FontWeight="Black"/>
-                <Button Height="30" Width="25" Name="Ptr_Right" Click="Ptr_Right_Click" Content=">"/>
-            </StackPanel>
+            <Button Height="60" Width="25" Name="Ptr_Right" Click="Ptr_Right_Click" Content=">" VerticalAlignment="Bottom"/>
+
 
         </StackPanel>
-        <Button x:Name="Step" Content="Step" Width="50" Height="50" Click="Step_Click"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button x:Name="Step" Content="Step" Height="30" Width="150" Click="Step_Click" Margin="10"/>
+            <Button x:Name="Confirm_Tape" Content="Confirm Tape" Height="30" Width="150" Click="Confirm_Tape_Click" Margin="10"/>
+            <Button x:Name="Run" Content="Run" Height="30" Width="150" Click="Run_Click" Margin="10"/>
+        </StackPanel>
+        
     </StackPanel>
 </Window>

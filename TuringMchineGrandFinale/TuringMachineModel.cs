@@ -22,7 +22,8 @@ namespace TuringMachineGrandFinale
         string tape;
         public Dictionary<int, string> tape_dictionary;
         int curPos = 0;
-        string curState;
+        public string curState;
+        public Behavior curBehavior = Behavior.right;
 
         List<Rule> rules;
         public TuringMachineModel()
@@ -32,14 +33,12 @@ namespace TuringMachineGrandFinale
             rules = new List<Rule>();
         }
 
-        public char Process(char c)
+        public string Process(string c)
         {
-            Rule res = rules.First(
-                r => (
-                r.curSymb == c && 
-                r.curQ == curState)
-                );
+            Rule res = rules.First(r => (r.curSymb == c && r.curQ == curState));
+            Trace.WriteLine($"q{res.curQ}{res.curSymb}->q{res.nextQ}{res.nextSymb}{res.behavior}");
             curState = res.nextQ;
+            curBehavior = res.behavior;
             return res.nextSymb;
         }
 
