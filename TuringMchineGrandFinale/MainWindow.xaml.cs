@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Data;
+using System.IO;
 
 namespace TuringMachineGrandFinale
 {
@@ -54,7 +55,7 @@ namespace TuringMachineGrandFinale
                 ptr.Columns.Add(new DataColumn());
                 positions.Columns.Add(new DataColumn());
 
-                turingMachine.tape_dictionary.Add(i, "");
+                turingMachine.tape_dictionary.Add(i, "_");
                 pos[i] = i;
                 str[i] = turingMachine.tape_dictionary[i];
             }
@@ -67,6 +68,7 @@ namespace TuringMachineGrandFinale
             Tape.ItemsSource = tape.DefaultView;
             Positions.ItemsSource = positions.DefaultView;
             Ptr.ItemsSource = ptr.DefaultView;
+
             /*
             turingMachine.AddRule(new Rule("q00->q11R"));
             turingMachine.AddRule(new Rule("q10->q10R"));
@@ -74,18 +76,28 @@ namespace TuringMachineGrandFinale
             turingMachine.AddRule(new Rule("q11->q11R"));
             turingMachine.AddRule(new Rule("q0_->q0_R"));
             turingMachine.AddRule(new Rule("q1_->q1_R"));
-            */
+
             turingMachine.AddRule(new Rule("q0_->q1xR"));
             turingMachine.AddRule(new Rule("q0x->q0xR"));
             turingMachine.AddRule(new Rule("q1_->q0_R"));
             turingMachine.AddRule(new Rule("q1x->q1xR"));
+            */
 
         }
 
         private void UpToDateTape()
         {
-            for (int i = 0; i < str.ItemArray.Length; i++)
-                turingMachine.tape_dictionary[Convert.ToInt32(pos.ItemArray[i])] = str.ItemArray[i].ToString();
+            try
+            {
+                for (int i = 0; i < str.ItemArray.Length; i++)
+                {
+                    turingMachine.tape_dictionary[Convert.ToInt32(pos.ItemArray[i])] = str.ItemArray[i].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
 
@@ -107,11 +119,6 @@ namespace TuringMachineGrandFinale
                 default:
                     break;
             }
-        }
-
-        private void Confirm_Tape_Click(object sender, RoutedEventArgs e)
-        {
-            UpToDateTape();
         }
 
         private void Run_Click(object sender, RoutedEventArgs e)
@@ -139,14 +146,12 @@ namespace TuringMachineGrandFinale
             turingMachine.CurPos--;
 
             if (!turingMachine.tape_dictionary.ContainsKey(relativeShift))
-                turingMachine.tape_dictionary.Add(relativeShift, "");
-
-            Trace.WriteLine("Relative :" + relativeShift + "; Absolute: " + absoluteShift);
+                turingMachine.tape_dictionary.Add(relativeShift, "_");
 
             cur[absoluteShift] = "^";
             if (absoluteShift >= 19)
-                cur[19] = " ";
-            cur[absoluteShift + 1] = " ";
+                cur[19] = "";
+            cur[absoluteShift + 1] = "";
 
             if (relativeShift <= Convert.ToInt32(pos.ItemArray[absoluteShift]))
             {
@@ -154,6 +159,32 @@ namespace TuringMachineGrandFinale
                     pos[i] = relativeShift - absoluteShift + i;
                 for (int i = 0; i < 20; i++)
                     str[i] = turingMachine.tape_dictionary[relativeShift - absoluteShift + i];
+            }
+        }
+
+        private void Alphabet_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void AddRule_Click(object sender, RoutedEventArgs e)
+        {
+            Rule r = new Rule(Rule.Text);
+            turingMachine.AddRule(r);
+        }
+
+        private void SaveRules_Click(object sender, RoutedEventArgs e)
+        {
+            File.WriteAllLines("test_out.txt", Array.ConvertAll(turingMachine.rules, r => r.));
+        }
+
+        private void LoadRules_Click(object sender, RoutedEventArgs e)
+        {
+            var lines = File.ReadAllLines("test_in.txt");
+            for (var i = 0; i < lines.Length; i += 1)
+            {
+                Rule rule = new Rule(lines[i]);
+                turingMachine.AddRule(rule);
             }
         }
 
@@ -165,14 +196,13 @@ namespace TuringMachineGrandFinale
             turingMachine.CurPos++;
 
             if (!turingMachine.tape_dictionary.ContainsKey(relativeShift))
-                turingMachine.tape_dictionary.Add(relativeShift, "");
+                turingMachine.tape_dictionary.Add(relativeShift, "_");
 
-            Trace.WriteLine("Relative :" + relativeShift + "; Absolute: " + absoluteShift);
 
             cur[absoluteShift] = "^";
             if (absoluteShift <= 0)
-                cur[1] = " ";
-            cur[absoluteShift - 1] = " ";
+                cur[1] = "";
+            cur[absoluteShift - 1] = "";
 
             if (relativeShift >= Convert.ToInt32(pos.ItemArray[absoluteShift]))
             {

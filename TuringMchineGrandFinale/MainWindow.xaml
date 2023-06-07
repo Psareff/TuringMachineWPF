@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TuringMachineGrandFinale"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="840" ResizeMode="NoResize">
     <Window.DataContext>
         <local:TuringMachineViewmodel/>
     </Window.DataContext>
@@ -39,7 +39,7 @@
                     </DataGrid.RowStyle>
                     <DataGrid.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
                             <Setter Property="VerticalAlignment" Value="Bottom"/>
                             <Setter Property="BorderThickness" Value="0"/>
                         </Style>
@@ -58,25 +58,25 @@
                             CanUserSortColumns="False" 
                             CanUserResizeColumns="False" 
                             CanUserResizeRows="False" 
-                          FontSize="20"
+                            FontSize="20"
                             CanUserReorderColumns="False"
                             HeadersVisibility="None"
                             HorizontalScrollBarVisibility="Disabled" 
-                            IsReadOnly="False"
-                          GridLinesVisibility="None"
-                          BorderThickness="0"
+                          IsReadOnly="False"
                             VerticalScrollBarVisibility="Disabled">
-                    
                     <DataGrid.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="HorizontalAlignment" Value="Center"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="MinWidth" Value="35"/>
                             <Style.Triggers>
                                 <Trigger Property="DataGridCell.IsSelected" Value="True">
                                     <Setter Property="BorderBrush" Value="Transparent"/>
                                     <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-                                    <Setter Property="Background" Value="Gray"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                </Trigger>
+                                <Trigger Property="DataGridCell.IsSelected" Value="False">
+                                    <Setter Property="BorderBrush" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                                    <Setter Property="Background" Value="Transparent"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -120,9 +120,39 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Button x:Name="Step" Content="Step" Height="30" Width="150" Click="Step_Click" Margin="10"/>
-            <Button x:Name="Confirm_Tape" Content="Confirm Tape" Height="30" Width="150" Click="Confirm_Tape_Click" Margin="10"/>
             <Button x:Name="Run" Content="Run" Height="30" Width="150" Click="Run_Click" Margin="10"/>
         </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="0">
+                <TextBlock Height="20" Margin="10, 5, 10, 0">Alphabet</TextBlock>
+                <TextBox Height="30" Width="380" Margin="10, 0, 10, 0" Name="Alphabet" TextChanged="Alphabet_TextChanged"/>
+                <TextBlock  Height="20"  Margin="10, 10, 10, 0">Rule</TextBlock>
+                <TextBox Height="30" Width="380" Margin="10, 0, 10, 0" Name="Rule"/>
+
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" >
+                    <Button Name ="AddRule" Content="Add rule" Width="120" Height="20" Margin="5" Click="AddRule_Click"/>
+                    <Button Name ="SaveRules" Content="Save rules" Width="120" Height="20" Margin="5" Click="SaveRules_Click"/>
+                    <Button Name ="LoadRules" Content="Load rules" Width="120" Height="20" Margin="5" Click="LoadRules_Click"/>
+                </StackPanel>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="1">
+                <TextBlock Height="20" Margin="10, 5, 10, 0">Task</TextBlock>
+                <TextBox Height="70" Width="380" Margin="10, 0, 10, 0"/>
+                <TextBlock  Height="20"  Margin="10, 10, 10, 0">Comment</TextBlock>
+                <TextBox Height="110" Width="380" Margin="10, 0, 10, 0"/>
+                
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" >
+                    <Button Content="Save state" Width="120" Height="20" Margin="5"/>
+                    <Button Content="Open state" Width="120" Height="20" Margin="5"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
         
     </StackPanel>
 </Window>

@@ -14,11 +14,13 @@ namespace TuringMachineGrandFinale
         public string curQ, nextQ;
         public string curSymb, nextSymb;
         public Behavior behavior;
+        public string str;
 
         Regex regex = new Regex(@"q(\w+)(\w)->q(\w+)(\w)(L|R|S)");
 
         public Rule(string rule_str)
         {
+            str = rule_str;
             if (regex.IsMatch(rule_str))
             {
                 string[] s = regex.Split(rule_str);

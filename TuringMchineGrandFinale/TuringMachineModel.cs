@@ -25,7 +25,7 @@ namespace TuringMachineGrandFinale
         public string curState;
         public Behavior curBehavior = Behavior.right;
 
-        List<Rule> rules;
+        public List<Rule> rules;
         public TuringMachineModel()
         {
             tape_dictionary = new Dictionary<int, string>();
