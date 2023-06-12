@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Data;
 using System.IO;
+using Microsoft.Win32;
 
 namespace TuringMachineGrandFinale
 {
@@ -38,6 +39,12 @@ namespace TuringMachineGrandFinale
         public MainWindow()
         {
             turingMachine = new TuringMachineModel();
+            var lines = File.ReadAllLines("Rules.cfg");
+            for (var i = 0; i < lines.Length; i += 1)
+            {
+                Rule rule = new Rule(lines[i]);
+                turingMachine.AddRule(rule);
+            }
 
             InitializeComponent();
 
@@ -68,21 +75,15 @@ namespace TuringMachineGrandFinale
             Tape.ItemsSource = tape.DefaultView;
             Positions.ItemsSource = positions.DefaultView;
             Ptr.ItemsSource = ptr.DefaultView;
+            DisplayRules();
+        }
 
-            /*
-            turingMachine.AddRule(new Rule("q00->q11R"));
-            turingMachine.AddRule(new Rule("q10->q10R"));
-            turingMachine.AddRule(new Rule("q01->q01R"));
-            turingMachine.AddRule(new Rule("q11->q11R"));
-            turingMachine.AddRule(new Rule("q0_->q0_R"));
-            turingMachine.AddRule(new Rule("q1_->q1_R"));
-
-            turingMachine.AddRule(new Rule("q0_->q1xR"));
-            turingMachine.AddRule(new Rule("q0x->q0xR"));
-            turingMachine.AddRule(new Rule("q1_->q0_R"));
-            turingMachine.AddRule(new Rule("q1x->q1xR"));
-            */
-
+        private void DisplayRules()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var i in turingMachine.rules)
+                sb.Append(i.str + "\n");
+            RulesList.Text = sb.ToString();
         }
 
         private void UpToDateTape()
@@ -90,9 +91,20 @@ namespace TuringMachineGrandFinale
             try
             {
                 for (int i = 0; i < str.ItemArray.Length; i++)
-                {
                     turingMachine.tape_dictionary[Convert.ToInt32(pos.ItemArray[i])] = str.ItemArray[i].ToString();
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void UpToDateView()
+        {
+            try
+            {
+                for (int i = 0; i < str.ItemArray.Length; i++)
+                    str[i] = turingMachine.tape_dictionary[Convert.ToInt32(pos.ItemArray[i])];
             }
             catch (Exception ex)
             {
@@ -104,26 +116,58 @@ namespace TuringMachineGrandFinale
         private void Step_Click(object sender, RoutedEventArgs e)
         {
 
-            UpToDateTape();
-            str[absoluteShift] = turingMachine.Process(turingMachine.tape_dictionary[relativeShift]);
-            UpToDateTape();
-           
-            switch (turingMachine.curBehavior)
+            try
             {
-                case Behavior.left:
-                    MoveLeft();
-                    break;
-                case Behavior.right: 
-                    MoveRight();
-                    break;
-                default:
-                    break;
+                UpToDateTape();
+                str[absoluteShift] = turingMachine.Process(turingMachine.tape_dictionary[relativeShift]);
+                UpToDateTape();
+
+                switch (turingMachine.curBehavior)
+                {
+                    case Behavior.left:
+                        MoveLeft();
+                        break;
+                    case Behavior.right:
+                        MoveRight();
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No rule exists with this parameters");
             }
         }
 
         private void Run_Click(object sender, RoutedEventArgs e)
         {
-            UpToDateTape();
+            while (turingMachine.curBehavior !=  Behavior.stop)
+            {
+                try
+                {
+                    UpToDateTape();
+                    str[absoluteShift] = turingMachine.Process(turingMachine.tape_dictionary[relativeShift]);
+                    UpToDateTape();
+
+                    switch (turingMachine.curBehavior)
+                    {
+                        case Behavior.left:
+                            MoveLeft();
+                            break;
+                        case Behavior.right:
+                            MoveRight();
+                            break;
+                        default:
+                            return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("No rule exists with this parameters");
+                }
+            }
         }
 
         private void Ptr_Left_Click(object sender, RoutedEventArgs e)
@@ -162,30 +206,97 @@ namespace TuringMachineGrandFinale
             }
         }
 
-        private void Alphabet_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private void AddRule_Click(object sender, RoutedEventArgs e)
         {
-            Rule r = new Rule(Rule.Text);
-            turingMachine.AddRule(r);
+            try
+            {
+                Rule r = new Rule(Rule.Text);
+                turingMachine.AddRule(r);
+                DisplayRules();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void SaveRules_Click(object sender, RoutedEventArgs e)
         {
-            File.WriteAllLines("test_out.txt", Array.ConvertAll(turingMachine.rules, r => r.));
+            //File.WriteAllLines("test_out.txt", Array.ConvertAll(turingMachine.rules, r => r.));
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.ShowDialog();
+            foreach (var i in turingMachine.rules)
+            {
+                File.WriteAllText(ofd.FileName, i.str);
+            }
         }
 
         private void LoadRules_Click(object sender, RoutedEventArgs e)
         {
-            var lines = File.ReadAllLines("test_in.txt");
-            for (var i = 0; i < lines.Length; i += 1)
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.ShowDialog();
+            string[] lines;
+            try
+            {
+                turingMachine.rules.Clear();
+                lines = File.ReadAllLines(ofd.FileName);
+                for (var i = 0; i < lines.Length; i++)
+                {
+                    Rule rule = new Rule(lines[i]);
+                    turingMachine.AddRule(rule);
+                }
+                Trace.WriteLine(turingMachine.rules.Count);
+                DisplayRules();
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+        private void SaveState_Click(object sender, RoutedEventArgs e)
+        {
+            UpToDateTape();
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.ShowDialog();
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(turingMachine.CurPos.ToString());
+
+            foreach (var i in turingMachine.tape_dictionary)
+                sb.Append(i.Value);
+            sb.AppendLine();
+            foreach (var i in turingMachine.tape_dictionary)
+                sb.Append(i.Key + " ");
+            sb.AppendLine();
+            foreach (var i in turingMachine.rules)
+                sb.AppendLine(i.str + " ");
+            File.WriteAllText(ofd.FileName, sb.ToString());
+
+        }
+
+        private void OpenState_Click(object sender, RoutedEventArgs e)
+        {
+            UpToDateView();
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.ShowDialog();
+            string[] lines = File.ReadAllLines(ofd.FileName);
+            turingMachine.CurPos = Convert.ToInt32(lines[0]);
+
+            var j = lines[2].Split(" ");
+
+            turingMachine.tape_dictionary.Clear();
+
+            for (int i = 0; i < lines[1].Length; i++)
+                turingMachine.tape_dictionary.Add(Convert.ToInt32(j[i]), lines[1][i].ToString());
+            turingMachine.rules.Clear();
+            for (int i = 3; i < lines.Length; i++)
             {
                 Rule rule = new Rule(lines[i]);
                 turingMachine.AddRule(rule);
             }
+            UpToDateView();
+            DisplayRules();
         }
 
         private void MoveRight()

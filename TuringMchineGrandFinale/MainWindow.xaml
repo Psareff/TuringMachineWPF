@@ -5,64 +5,64 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TuringMachineGrandFinale"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="840" ResizeMode="NoResize">
+        Title="MainWindow" Height="470" Width="840" ResizeMode="NoResize" Background="#222831">
     <Window.DataContext>
         <local:TuringMachineViewmodel/>
     </Window.DataContext>
     <StackPanel>
         <StackPanel Orientation="Horizontal" Height="90" HorizontalAlignment="Center">
-            <Button Height="60" Width="25" Name="Ptr_Left" Click="Ptr_Left_Click" Content="&lt;" VerticalAlignment="Bottom"/>
+            <Button Height="70" Width="25" Name="Ptr_Left" Click="Ptr_Left_Click" Content="&lt;" VerticalAlignment="Bottom"  Background="#00ADB5"/>
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    
                 <DataGrid Name="Positions"
-                            Width="700"
-                      FontWeight="Light"
-                          FontSize="10"
-                          IsReadOnly="True"
-                          
-                            ColumnWidth="35"
-                            MinColumnWidth="35"
-                            MinRowHeight="30"
-                                                                          GridLinesVisibility="None"
-                      BorderThickness="0"
-                            ColumnHeaderHeight="0" 
-                            CanUserAddRows="False" 
-                            CanUserSortColumns="False" 
-                            CanUserResizeColumns="False" 
-                            CanUserResizeRows="False" 
-                            CanUserReorderColumns="False"
-                            HeadersVisibility="None"
-                            HorizontalScrollBarVisibility="Disabled" >
+                        Width="700"
+                        FontWeight="Light"
+                        FontSize="15"
+                        IsReadOnly="True" 
+                        ColumnWidth="35"
+                        MinColumnWidth="35"
+                        MinRowHeight="30"
+                        GridLinesVisibility="None"
+                        BorderThickness="0"
+                        ColumnHeaderHeight="0" 
+                        CanUserAddRows="False" 
+                        CanUserSortColumns="False" 
+                        CanUserResizeColumns="False" 
+                        CanUserResizeRows="False" 
+                        CanUserReorderColumns="False"
+                        HeadersVisibility="None"
+                        HorizontalScrollBarVisibility="Disabled" >
                     <DataGrid.RowStyle>
                         <Style TargetType="DataGridRow">
+                            <Setter Property="Background" Value="#222831"/>
                             <Setter Property="IsHitTestVisible" Value="False"/>
                         </Style>
                     </DataGrid.RowStyle>
                     <DataGrid.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property ="Foreground" Value="#FFFFFF"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
                             <Setter Property="VerticalAlignment" Value="Bottom"/>
                             <Setter Property="BorderThickness" Value="0"/>
                         </Style>
                     </DataGrid.CellStyle>
-
                 </DataGrid>
                 
                 <DataGrid Name="Tape"
                             Width="700"
                             ColumnWidth="35"
                             MinColumnWidth="35"
-
-                            MinRowHeight="30"
+                            MinRowHeight="40"
                             ColumnHeaderHeight="0" 
                             CanUserAddRows="False" 
                             CanUserSortColumns="False" 
                             CanUserResizeColumns="False" 
                             CanUserResizeRows="False" 
-                            FontSize="20"
+                            FontSize="30"
                             CanUserReorderColumns="False"
                             HeadersVisibility="None"
                             HorizontalScrollBarVisibility="Disabled" 
-                          IsReadOnly="False"
+                            IsReadOnly="False"
                             VerticalScrollBarVisibility="Disabled">
                     <DataGrid.CellStyle>
                         <Style TargetType="DataGridCell">
@@ -87,9 +87,10 @@
                             Width="700"
                             ColumnWidth="35"
                             MinColumnWidth="35"
-                            MinRowHeight="30"
+                            MinRowHeight="35"
                             ColumnHeaderHeight="0" 
                             IsReadOnly="True"
+                      FontSize="20"
                             CanUserAddRows="False" 
                             CanUserSortColumns="False" 
                             HeadersVisibility="None"                      
@@ -102,54 +103,57 @@
                             VerticalScrollBarVisibility="Disabled">
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow">
-                        <Setter Property="IsHitTestVisible" Value="False"/>
+                            <Setter Property="Background" Value="#222831"/>
+                            <Setter Property="IsHitTestVisible" Value="False"/>
                     </Style>
                 </DataGrid.RowStyle>
                     <DataGrid.CellStyle>
                         <Style TargetType="DataGridCell">
+                            <Setter Property ="Foreground" Value="#FFFFFF"/>
                             <Setter Property="HorizontalAlignment" Value="Center"/>
                             <Setter Property="VerticalAlignment" Value="Top"/>
-                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="BorderThickness" Value="0"/>
                         </Style>
                     </DataGrid.CellStyle>
                 </DataGrid>
             </StackPanel>
-            <Button Height="60" Width="25" Name="Ptr_Right" Click="Ptr_Right_Click" Content=">" VerticalAlignment="Bottom"/>
+            <Button Height="70" Width="25" Name="Ptr_Right" Click="Ptr_Right_Click" Content=">" VerticalAlignment="Bottom" Background="#00ADB5"/>
 
 
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button x:Name="Step" Content="Step" Height="30" Width="150" Click="Step_Click" Margin="10"/>
-            <Button x:Name="Run" Content="Run" Height="30" Width="150" Click="Run_Click" Margin="10"/>
+            <Button x:Name="Step" Content="Step" Height="30" Width="150" Click="Step_Click" Margin="10" FontSize="17" Background="#00ADB5"/>
+            <Button x:Name="Run" Content="Run" Height="30" Width="150" Click="Run_Click" Margin="10" FontSize="17" Background="#00ADB5"/>
         </StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            
+
             <StackPanel Grid.Column="0">
-                <TextBlock Height="20" Margin="10, 5, 10, 0">Alphabet</TextBlock>
-                <TextBox Height="30" Width="380" Margin="10, 0, 10, 0" Name="Alphabet" TextChanged="Alphabet_TextChanged"/>
-                <TextBlock  Height="20"  Margin="10, 10, 10, 0">Rule</TextBlock>
+                <TextBlock  Height="20"  Margin="20, 5, 10, 0" FontSize="17" Foreground="#FFFFFF">Rule</TextBlock>
                 <TextBox Height="30" Width="380" Margin="10, 0, 10, 0" Name="Rule"/>
 
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" >
-                    <Button Name ="AddRule" Content="Add rule" Width="120" Height="20" Margin="5" Click="AddRule_Click"/>
-                    <Button Name ="SaveRules" Content="Save rules" Width="120" Height="20" Margin="5" Click="SaveRules_Click"/>
-                    <Button Name ="LoadRules" Content="Load rules" Width="120" Height="20" Margin="5" Click="LoadRules_Click"/>
+                    <Button Name ="AddRule" Content="Add rule" Width="120" Height="30" Margin="5" Click="AddRule_Click" FontSize="17" Background="#00ADB5"/>
+                    <Button Name ="SaveRules" Content="Save rules" Width="120" Height="30" Margin="5" Click="SaveRules_Click" FontSize="17" Background="#00ADB5"/>
+                    <Button Name ="LoadRules" Content="Load rules" Width="120" Height="30" Margin="5" Click="LoadRules_Click" FontSize="17" Background="#00ADB5"/>
                 </StackPanel>
+
+                <TextBlock Height="20" Margin="20, 5, 0, 0" FontSize="17" Foreground="#FFFFFF">Rules List</TextBlock>
+                <TextBox x:Name="RulesList" Height="125" Margin="20, 0 , 20, 0" IsReadOnly="True" FontSize="20"/>
             </StackPanel>
             
             <StackPanel Grid.Column="1">
-                <TextBlock Height="20" Margin="10, 5, 10, 0">Task</TextBlock>
-                <TextBox Height="70" Width="380" Margin="10, 0, 10, 0"/>
-                <TextBlock  Height="20"  Margin="10, 10, 10, 0">Comment</TextBlock>
-                <TextBox Height="110" Width="380" Margin="10, 0, 10, 0"/>
+                <TextBlock Height="20" Margin="20, 5, 10, 0" FontSize="17" Foreground="#FFFFFF">Task</TextBlock>
+                <TextBox Height="70" Width="380"  FontSize="20"/>
+                <TextBlock  Height="20"  Margin="20, 10, 10, 0"  FontSize="17" Foreground="#FFFFFF">Comment</TextBlock>
+                <TextBox Height="110" Width="380" Margin="10, 0, 10, 0"  FontSize="20"/>
                 
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" >
-                    <Button Content="Save state" Width="120" Height="20" Margin="5"/>
-                    <Button Content="Open state" Width="120" Height="20" Margin="5"/>
+                    <Button Content="Save state" Width="120" Height="30" Margin="5" Name="SaveState" Click="SaveState_Click" FontSize="17" Background ="#00ADB5"/>
+                    <Button Content="Open state" Width="120" Height="30" Margin="5" Name="OpenState" Click="OpenState_Click" FontSize="17" Background="#00ADB5"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
